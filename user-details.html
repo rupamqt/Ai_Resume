@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Resume Builder</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        main {
+            flex: 1;
+            padding: 2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #resume-form {
+            width: 80%;
+            max-width: 800px;
+        }
+
+        #resume-form label, #resume-form input, #resume-form textarea, #resume-form select {
+            display: block;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+
+        #resume-form textarea {
+            height: 100px;
+        }
+
+        #generate-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1em 2em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #generated-resume {
+            margin-top: 2em;
+            border: 1px solid #ccc;
+            padding: 1em;
+            width: 80%;
+            max-width: 800px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AI-Powered Resume Builder</h1>
+    </header>
+
+    <main>
+        <form id="resume-form">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="linkedin">LinkedIn Profile (Optional):</label>
+            <input type="url" id="linkedin" name="linkedin">
+
+            <label for="summary">Professional Summary:</label>
+            <textarea id="summary" name="summary" required></textarea>
+
+            <label for="experience">Work Experience (One per line, e.g., Job Title, Company, Dates, Description):</label>
+            <textarea id="experience" name="experience" required></textarea>
+
+            <label for="education">Education (One per line, e.g., Degree, University, Dates):</label>
+            <textarea id="education" name="education" required></textarea>
+
+            <label for="skills">Skills (Comma-separated):</label>
+            <input type="text" id="skills" name="skills" required>
+
+            <button type="button" id="generate-button">Generate Resume</button>
+        </form>
+
+        <div id="generated-resume"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 AI Resume Builder</p>
+    </footer>
+
+    <script>
+        document.getElementById('generate-button').addEventListener('click', function() {
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                linkedin: document.getElementById('linkedin').value,
+                summary: document.getElementById('summary').value,
+                experience: document.getElementById('experience').value.split('\n'),
+                education: document.getElementById('education').value.split('\n'),
+                skills: document.getElementById('skills').value.split(',')
+            };
+
+            // Basic Resume Generation (Replace with actual AI integration)
+            let resumeText = `
+                ${formData.name}
+                ${formData.email} | ${formData.phone} | ${formData.linkedin}
+
+                Summary:
+                ${formData.summary}
+
+                Experience:
+                ${formData.experience.map(exp => `    - ${exp}`).join('\n')}
+
+                Education:
+                ${formData.education.map(edu => `    - ${edu}`).join('\n')}
+
+                Skills:
+                ${formData.skills.join(', ')}
+            `;
+
+            document.getElementById('generated-resume').textContent = resumeText;
+
+            // In a real application, you would send formData to a backend
+            // server that uses an AI model (e.g., OpenAI API, custom model)
+            // to generate a more sophisticated resume.
+            // Then, you would display the generated resume in the 'generated-resume' div.
+        });
+    </script>
+</body>
+</html>
