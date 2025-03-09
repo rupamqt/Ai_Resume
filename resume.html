@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&family=Julius+Sans+One&family=Open+Sans&family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="template.css">
+
+  <!-- ✅ Import html2canvas and jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+  <script>
+    // Load data from localStorage and insert into the template
+    window.onload = () => {
+      const data = JSON.parse(localStorage.getItem("resumeData"));
+
+      if (data) {
+        // Update basic info
+        document.getElementById("fullName").innerText = data.fullName || "Your Name";
+        document.getElementById("jobTitle").innerText = data.jobTitle || "Your Job Title";
+        
+        document.getElementById("contactInfo").innerHTML = `
+          <p><i class="fa fa-phone contactIcon"></i> ${data.phone || "N/A"}</p>
+          <p><i class="fa fa-envelope contactIcon"></i> <a href="mailto:${data.email || '#'}">${data.email || "N/A"}</a></p>
+          <p><i class="fa fa-map-marker contactIcon"></i> ${data.location || "N/A"}</p>
+          <p><i class="fa fa-linkedin-square contactIcon"></i> <a href="${data.linkedin || '#'}">${data.linkedin || "N/A"}</a></p>
+        `;
+
+        // Update About Me section
+        document.getElementById("aboutMe").innerText = data.aboutMe || "Write about yourself here.";
+
+        // Update Skills
+        const skillsContainer = document.getElementById("skills");
+        skillsContainer.innerHTML = "";
+        data.skills?.forEach(skill => {
+          const skillHTML = `
+            <div class="skill">
+              <div>
+                <span>${skill.name}</span>
+              </div>
+              <div class="yearsOfExperience">
+                <span class="alignright">${skill.years}</span>
+                <span class="alignleft">years</span>
+              </div>
+            </div>
+          `;
+          skillsContainer.innerHTML += skillHTML;
+        });
+
+        // Update Work Experience
+        const workExperienceContainer = document.getElementById("workExperience");
+        workExperienceContainer.innerHTML = "";
+        data.workExperience?.forEach(job => {
+          const jobHTML = `
+            <li>
+              <div class="jobPosition">
+                <span class="bolded">${job.title}</span>
+                <span>${job.startDate} - ${job.endDate}</span>
+              </div>
+              <div class="projectName bolded">
+                <span>${job.company}</span>
+              </div>
+              <div class="smallText">
+                <p>${job.description}</p>
+                <ul>
+                  ${job.highlights.map(highlight => `<li>${highlight}</li>`).join("")}
+                </ul>
+                <p><span class="bolded">Skills:</span> ${job.skills.join(", ")}</p>
+              </div>
+            </li>
+          `;
+          workExperienceContainer.innerHTML += jobHTML;
+        });
+
+        // Update Education
+        const educationContainer = document.getElementById("education");
+        educationContainer.innerHTML = "";
+        data.education?.forEach(edu => {
+          const eduHTML = `
+            <div class="smallText">
+              <p class="bolded white">${edu.degree}</p>
+              <p>${edu.institution}</p>
+              <p>${edu.year}</p>
+            </div>
+          `;
+          educationContainer.innerHTML += eduHTML;
+        });
+      }
+    };
+
+    // ✅ Function to Download Resume as PDF
+    async function downloadResume() {
+      const { jsPDF } = window.jspdf;
+
+      const pdf = new jsPDF("p", "mm", "a4"); // A4 size PDF
+
+      const element = document.querySelector('page');
+
+      // Capture the page using html2canvas
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true // To handle cross-origin images
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      pdf.save('resume.pdf');
+    }
+  </script>
+</head>
+<body>
+  <page size="A4">
+    <div class="container">
+      <div class="leftPanel">
+        <img src="avatar.png"/>
+        <div class="details">
+          <!-- CONTACT -->
+          <div class="item bottomLineSeparator">
+            <h2>CONTACT</h2>
+            <div id="contactInfo" class="smallText">
+              <!-- Contact Info will be populated here -->
+            </div>
+          </div>
+
+          <!-- SKILLS -->
+          <div class="item bottomLineSeparator">
+            <h2>SKILLS</h2>
+            <div id="skills" class="smallText">
+              <!-- Skills will be populated here -->
+            </div>
+          </div>
+
+          <!-- EDUCATION -->
+          <div class="item">
+            <h2>EDUCATION</h2>
+            <div id="education" class="smallText">
+              <!-- Education will be populated here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rightPanel">
+        <!-- NAME & JOB TITLE -->
+        <div>
+          <h1 id="fullName">Your Name</h1>
+          <div class="smallText">
+            <h3 id="jobTitle">Your Job Title</h3>
+          </div>
+        </div>
+
+        <!-- ABOUT ME -->
+        <div>
+          <h2>About me</h2>
+          <div class="smallText">
+            <p id="aboutMe">Write about yourself here.</p>
+          </div>
+        </div>
+
+        <!-- WORK EXPERIENCE -->
+        <div class="workExperience">
+          <h2>Work experience</h2>
+          <ul id="workExperience">
+            <!-- Work Experience will be populated here -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ New Button to Download Resume -->
+    <div style="text-align: center; margin-top: 20px;">
+      <button onclick="downloadResume()" style="
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      ">
+        Download Resume
+      </button>
+    </div>
+  </page>
+</body>
+</html>

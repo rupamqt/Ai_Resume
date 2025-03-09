@@ -7,6 +7,8 @@ This project is an AI-powered resume builder that allows users to input their pe
 - User-friendly form to input personal and professional details
 - Generates a formatted resume based on user input
 - Basic resume generation (can be extended with AI integration)
+- **Enhanced visual styling with a background image for a better user experience**
+- **"Brainerds" header added at the top left corner**
 
 ## Technologies Used
 
@@ -41,7 +43,6 @@ This project is an AI-powered resume builder that allows users to input their pe
 - Implement backend support for saving and retrieving user data.
 
 ## License
-
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contributing

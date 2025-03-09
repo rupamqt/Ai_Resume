@@ -5,25 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Resume Builder</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .top-left {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5em;
+            color: white;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        /* Developers Section Styling */
+        .developers {
+            padding: 50px 20px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .developers h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .developer-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .developer-card {
+            width: 250px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .developer-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .developer-card h3 {
+            font-size: 1.4em;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .developer-card p {
+            color: #777;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .developer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+    </style>
 </head>
 <body>
+    <div class="top-left">Brainerds</div>
+
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero"> 
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>AI-Powered Resume Builder</h1>
+            <h1><b><i>AI-Powered Resume Builder & Screener</i></b></h1>
             <p>Create a job-winning resume in minutes with AI assistance.</p>
-            <a href="user-details.html" class="cta-button">Get Started for Free</a>
+            <a href="user-details.html" class="cta-button">Build Your Dream Resume</a>
+            <a href="screener.html" class="cta-button">Screen Your Resume</a>
         </div>
     </section>
 
     <!-- Features Section -->
     <section class="features">
         <div class="feature-card">
-            <h3>AI-Powered Suggestions</h3>
+            <h3>With the Power of AI</h3>
         </div>
         <div class="feature-card">
-            <h3>ATS-Friendly Formatting</h3>
+            <h3>ATS-Friendly</h3>
         </div>
         <div class="feature-card">
             <h3>Customizable Templates</h3>
@@ -33,16 +102,37 @@
     <!-- Testimonials -->
     <section class="testimonials">
         <h2>What Our Users Say</h2>
-        <div class="testimonial-card">"Helped me land my dream job!"</div>
-        <div class="testimonial-card">"Super easy to use!"</div>
-        <div class="testimonial-card">"Best resume builder ever!"</div>
+        <div class="testimonial-card">Helped me land my dream job!</div>
+        <div class="testimonial-card">Super easy to use!</div>
+        <div class="testimonial-card">Best Resume Builder and Screener</div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="cta">
-        <h2>Ready to Build Your Resume?</h2>
-        <p>Start now and let AI do the heavy lifting.</p>
-        <button class="cta-button">Create My Resume</button>
+    <!-- ✅ Developers Section -->
+    <section class="developers">
+        
+        <div class="developer-container">
+            <h2> <i> <b>  Meet the Creator Panel </b> </i>   </h2>
+            <!-- Developer 1 -->
+            <div class="developer-card">
+                <img src="developer1.jpg" alt="Developer 1">
+                <h3>Anirudha Ghosh</h3>
+                <p>Frontend Developer . Specializes in Powerpoint , Excel</p>
+            </div>
+
+            <!-- Developer 2 -->
+            <div class="developer-card">
+                <img src="developer2.jpg" alt="Developer 2">
+                <h3>Dhrubajyoti Ghosh</h3>
+                <p>Frontend and Backend Developer. Specializes in Java.</p>
+            </div>
+
+            <!-- Developer 3 -->
+            <div class="developer-card">
+                <img src="developer3.jpg" alt="Developer 3">
+                <h3>Sumouli Banerjee</h3>
+                <p>Frontend Developer . Specialization in C .</p>
+            </div>
+        </div>
     </section>
 </body>
 </html>

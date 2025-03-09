@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="screener.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Resume Screener (PDF Upload)</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+      color: #3498db;
+    }
+
+    input[type="file"], input[type="text"], button {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #27ae60;
+      color: white;
+      cursor: pointer;
+    }
+
+    #results {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<div>
+<body>
+  <h1>AI Resume Screener (PDF Upload)</h1>
+  <input type="file" id="resumeFile" accept=".pdf">
+  <input type="text" id="keywords" placeholder="e.g., Python, JavaScript, Data Analysis">
+  <button onclick="screenResume()">Screen Resume</button>
+  <div id="results">
+    <h2>Results:</h2>
+    <p id="match-results"></p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
+  <script>
+    async function screenResume() {
+      const fileInput = document.getElementById('resumeFile');
+      const keywordsInput = document.getElementById('keywords').value.toLowerCase();
+      const keywords = keywordsInput.split(',').map(keyword => keyword.trim());
+      const resultsDiv = document.getElementById('match-results');
+      resultsDiv.innerHTML = '';
+
+      if (!fileInput.files[0] || !keywordsInput) {
+        resultsDiv.innerHTML = '<p>Please upload a PDF and enter keywords.</p>';
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async function() {
+        try {
+          const typedArray = new Uint8Array(reader.result);
+          const pdf = await pdfjsLib.getDocument(typedArray).promise;
+          let resumeText = '';
+
+          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            const page = await pdf.getPage(pageNum);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items.map(item => item.str).join(' ');
+            resumeText += pageText + ' ';
+          }
+
+          resumeText = resumeText.toLowerCase();
+
+          let matchedKeywords = [];
+          keywords.forEach(keyword => {
+            if (resumeText.includes(keyword)) {
+              matchedKeywords.push(keyword);
+            }
+          });
+
+          if (matchedKeywords.length > 0) {
+            resultsDiv.innerHTML = `<p>APPLICABLE: ${matchedKeywords.join(', ')}</p>`;
+          } else {
+            resultsDiv.innerHTML = '<p>NOT APPLICABLE.</p>';
+          }
+        } catch (error) {
+          resultsDiv.innerHTML = `<p>Error processing PDF: ${error.message}</p>`;
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+  </script>
+  </div>
+</body>
+</html>
